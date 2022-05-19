@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+    <link rel="stylesheet" href="/static/assets/css/change_password.css">
+{% endblock stylesheets %}
+
+{% block content %}	
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+
+            <div class="row" style="flex-direction: column;">
+
+                <div class="col-sm-12">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <div class="col-md-6">
+                                <h5 class="mt-2">Edit product.</h5>
+                                <hr>
+                                <form method="POST" id = "details-form" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-sm-3 col-form-label">Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" value="{{product.name}}" name="name" placeholder="Product name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="staticEmail" class="col-sm-3 col-form-label">Quantity</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" value="{{product.quantity}}" name="quantity" placeholder="Product quantity">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-3 col-form-label">Product Image</label>
+                                        <div class="col-sm-9">
+                                            <input type="file" name="image">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputPassword" class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <input class="change-btn" type="submit" value="Edit">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <!-- Apex Chart -->
+    <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
+    <!-- custom-chart js -->
+    <script src="/static/assets/js/pages/dashboard-main.js"></script>
+
+{% endblock javascripts %}

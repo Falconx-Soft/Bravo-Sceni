@@ -1,0 +1,31 @@
+
+	<!-- [ navigation menu ] start -->
+	<nav class="pcoded-navbar menupos-fixed menu-light ">
+		<div class="navbar-wrapper  ">
+			<div class="navbar-content scroll-div " >
+				<ul class="nav pcoded-inner-navbar ">
+					<li class="nav-item pcoded-menu-caption">
+						<label></label>
+					</li>
+					<li class="nav-item">
+					    <a href="{% url 'products' %}" 
+						   class="nav-link "><span class="pcoded-micon">
+						   <i class="feather icon-shopping-cart"></i></span><span class="pcoded-mtext">Products</span></a>
+					</li>
+
+					<li class="nav-item">
+					    <a href="{% url 'change_password' %}" 
+						   class="nav-link "><span class="pcoded-micon">
+						   <i class="feather icon-lock"></i></span><span class="pcoded-mtext">Change Password</span></a>
+					</li>
+
+					<li class="nav-item">
+					    <a href="{% url 'logout' %}" 
+						   class="nav-link "><span class="pcoded-micon">
+						   <i class="feather icon-log-out"></i></span><span class="pcoded-mtext">Logout</span></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+    <!-- [ navigation menu ] end -->

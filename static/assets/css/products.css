@@ -1,0 +1,40 @@
+.title-div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title{
+    color: #2D2E7E;
+}
+
+.add-btn{
+    background-color: #2D2E7E;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
+.add-btn:hover{
+    color: #2D2E7E;
+    background-color: transparent;
+    border: 1px solid #2D2E7E;
+}
+
+.product-detail-div{
+    display: flex;
+    align-items: center;
+}
+
+.product-image{
+    width: 85px;
+    margin-left: 20px;
+}
+
+.product-btn-div{
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
