@@ -15,11 +15,6 @@ urlpatterns = [
 
 	path('home/', views.home, name="home"),
 
-      path('products/', views.get_products, name="products"),
-      path('add_products/', views.add_products, name="add_products"),
-      path('delete_products/<int:id>', views.delete_products, name="delete_products"),
-      path('edit_products/<int:id>', views.edit_products, name="edit_products"),
-
 	path('reset_password/', auth_views.PasswordResetView.as_view(template_name="User/restPassword/restPassword.html"), name="reset_password"),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="User/restPassword/passwordRestSend.html"),
           name="password_reset_done"),
