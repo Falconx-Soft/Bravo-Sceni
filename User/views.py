@@ -14,7 +14,7 @@ def home(request):
 def loginUser(request):
 
 	if request.user.is_authenticated:
-		return redirect('home')
+		return redirect('products')
 	msg = None
 	if request.method == 'POST':
 		username = request.POST['username']
@@ -26,7 +26,7 @@ def loginUser(request):
 
 			if user is not None:
 				login(request, user)
-				return redirect('home')
+				return redirect('products')
 			else:
 				msg = 'User/Something is wrong'
 		except:
