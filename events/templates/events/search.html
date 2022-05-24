@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+    <link rel="stylesheet" href="/static/assets/css/events.css">
+{% endblock stylesheets %}
+
+{% block content %}	
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+
+            <div class="row" style="flex-direction: column;">
+                <div class="title-div">
+                    <h1 class="title">Search Events By Date</h1>
+                </div>
+
+                <div class="card event-search-div">
+                    <div class="search-input-div">
+                        <form method="POST" id="submit-form" enctype="multipart/form-data" style="width:100%;display: flex;
+                        justify-content: center;">
+                            {% csrf_token %}
+                            <input type="date" id="date-search-input" class="form-control date-input" name="search_date" placeholder="Shipment Date" value="{{search_date}}">
+                        </form>
+
+                        <form method="POST" id="submit-form2" enctype="multipart/form-data" style="width:100%;display: flex;
+                        justify-content: center;">
+                            {% csrf_token %}
+                            <input type="date" id="date-search-input_low_range" class="form-control date-input-range" name="search_date_low_range" placeholder="Shipment Date" value="{{search_date_low_range}}">
+                            <input type="date" id="date-search-input_heigh_range" class="form-control date-input-range" name="search_date_heigh_range" placeholder="Shipment Date" value="{{search_date_heigh_range}}">
+                            <input class="btn  btn-secondary" type="submit" value="Search">
+                        </form>
+                    </div>
+                    {% for e in events_obj %}
+                        <div class="card" style="display: flex;
+                                                flex-direction: row;
+                                                justify-content: space-between;">
+                            <div class="product-detail-div">
+                                <div class="card-body">
+                                    <b>Client Name: </b><br>{{e.client_name}}
+                                </div>
+                                <div class="card-body">
+                                    <b>Location: </b><br>{{e.event_location}}
+                                </div>
+                                <div class="card-body">
+                                    <b>Shipment Date: </b><br>{{e.shipment_date}}
+                                </div>
+                                <div class="card-body">
+                                    <b>Return Date: </b><br>{{e.return_date}}
+                                </div>
+                                <div class="card-body">
+                                    <b>Status: </b><br>{{e.status}}
+                                </div>
+                            </div>
+                            <div class="product-btn-div">
+                                <a class="btn  btn-success" href="{% url 'view_event' e.id %}">Details</a>
+                                <a class="btn  btn-primary" href="{% url 'edit_events' e.id %}">Edit</a>
+                                <a class="btn  btn-danger" href="{% url 'delete_events' e.id %}">Delete</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <!-- Apex Chart -->
+    <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
+    <!-- custom-chart js -->
+    <script src="/static/assets/js/pages/dashboard-main.js"></script>
+
+    <script src="/static/assets/js/search.js"></script>
+
+{% endblock javascripts %}

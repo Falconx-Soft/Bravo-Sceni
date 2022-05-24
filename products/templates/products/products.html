@@ -16,7 +16,9 @@
             <div class="row" style="flex-direction: column;">
                 <div class="title-div">
                     <h1 class="title">Products</h1>
-                    <a class="add-btn" href="{% url 'add_products' %}">+ Product</a>
+                    {% if request.user.is_superuser %}
+                        <a class="add-btn" href="{% url 'add_products' %}">+ Product</a>
+                    {% endif %}
                 </div>
                 {% for p in products %}
                 <div class="card" style="display: flex;
@@ -25,12 +27,20 @@
                     <div class="product-detail-div">
                         <img src="{{p.image.url}}" class="product-image">
                         <div class="card-body">
-                            {{p.name}} ({{p.quantity}})
+                            <b>Name: </b>{{p.name}}
+                        </div>
+                        <div class="card-body">
+                            <b>Quantity:</b> {{p.quantity}}
+                        </div>
+                        <div class="card-body">
+                            <b>Quantity Left: </b>{{p.quantity_left}}
                         </div>
                     </div>
                     <div class="product-btn-div">
-                        <a class="btn  btn-primary" href="{% url 'edit_products' p.id %}">Edit</a>
-                        <a class="btn  btn-danger" href="{% url 'delete_products' p.id %}">Delete</a>
+                        {% if request.user.is_superuser %}
+                            <a class="btn  btn-primary" href="{% url 'edit_products' p.id %}">Edit</a>
+                            <a class="btn  btn-danger" href="{% url 'delete_products' p.id %}">Delete</a>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
