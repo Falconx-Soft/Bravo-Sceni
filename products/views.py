@@ -59,6 +59,7 @@ def view_product(request,id):
 	products_obj = products.objects.get(id=id)
 	event_products_obj = event_products.objects.filter(event_products=products_obj)
 	context = {
-		'product_details':event_products_obj
+		'product_details':event_products_obj,
+		'products_obj':products_obj
 	}
 	return render(request,'products/view_product.html',context)

@@ -3,7 +3,21 @@ from .models import *
 from products.models import *
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+# Google Calendar
+
+from pprint import pprint
+from .google import create_service, convert_to_RFC_datetime
+import pathlib
+
+print(pathlib.Path().resolve(),"***************")
+
+CLIENT_SECRET_FILE =str(pathlib.Path().resolve())+'\events\credentials.json'
+API_NAME = 'Calendar'
+API_VERSION = 'v3'
+SCOPES = ['https://www.googleapis.com/auth/calendar']
+
+service = create_service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+calander_id_chicago = 'ibrahim.murad009@gmail.com'
 
 
 def calendar(request):
@@ -46,12 +60,37 @@ def add_events(request):
             product_quantities = request.POST.get('product_quantities')
             temp_ids = product_ids.split(",")
             temp_quantities = product_quantities.split(",")
+
+            print(return_date,"***********")
+
+            #Create Event
+            temp_shipment_date = shipment_date.split('-')
+            temp_return_date = return_date.split('-')
+            event_request_body = {
+                'start':{
+                    'dateTime': convert_to_RFC_datetime(int(temp_shipment_date[0]), int(temp_shipment_date[1]), int(temp_shipment_date[2]), 00, 00),
+                    'timeZone': 'Asia/Taipei'
+                },
+                'end':{
+                    'dateTime': convert_to_RFC_datetime(int(temp_return_date[0]), int(temp_return_date[1]), int(temp_return_date[2]), 00, 00),
+                    'timeZone': 'Asia/Taipei'
+                },
+                'summary': client_name+"'s Event",
+                'description': 'Shipment Date:'+shipment_date+' Return Date:'+return_date+' Location:'+event_location+' Status:'+status,
+            }
+
+            event = service.events().insert(calendarId=calander_id_chicago, body=event_request_body).execute()
+            print(event)
+
+            eventID = event['id']
+
             event_obj = events.objects.create(
                 client_name=client_name,
                 event_location=event_location,
                 shipment_date=shipment_date,
                 return_date=return_date,
-                status=status,           
+                status=status, 
+                google_event_id = eventID,      
                 )
             event_obj.save()
             for x in range(len(temp_quantities)):
@@ -122,6 +161,27 @@ def edit_events(request,id):
             shipment_date = request.POST.get('shipment_date')
             return_date = request.POST.get('return_date')
             status = request.POST.get('status')
+
+            #update
+            temp_shipment_date = shipment_date.split('-')
+            temp_return_date = return_date.split('-')
+            event_request_body = {
+                'start':{
+                    'dateTime': convert_to_RFC_datetime(int(temp_shipment_date[0]), int(temp_shipment_date[1]), int(temp_shipment_date[2]), 00, 00),
+                    'timeZone': 'Asia/Taipei'
+                },
+                'end':{
+                    'dateTime': convert_to_RFC_datetime(int(temp_return_date[0]), int(temp_return_date[1]), int(temp_return_date[2]), 00, 00),
+                    'timeZone': 'Asia/Taipei'
+                },
+                'summary': client_name+"'s Event",
+                'description': 'Shipment Date:'+shipment_date+' Return Date:'+return_date+' Location:'+event_location+' Status:'+status,
+            }
+
+            service.events().update(
+                        calendarId=calander_id_chicago,
+                        eventId=events_obj.google_event_id,
+                        body=event_request_body).execute()
 
             events_obj.client_name = client_name
             events_obj.event_location = event_location
@@ -201,6 +261,11 @@ def edit_events(request,id):
 def delete_events(request,id):
     if request.user.is_superuser:
         events_obj = events.objects.get(id=id)
+        #Delete Event
+        service.events().delete(
+            calendarId=calander_id_chicago,
+            eventId=events_obj.google_event_id).execute()
+
         event_products_obj = event_products.objects.filter(event=events_obj)
         for e in event_products_obj:
             e.event_products.quantity_left = int(e.quantity) + e.event_products.quantity_left

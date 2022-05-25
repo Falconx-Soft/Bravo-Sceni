@@ -16,12 +16,8 @@
             <h1 class="title">Shipments</h1>
 
             {% for details in product_details %}
-            <div class="card" style="display: flex;
-                                    flex-direction: row;
-                                    justify-content: space-between;
-                                    width: 60%;
-                                    ">
-                <div class="product-detail-div">
+            <div class="card">
+                <div class="product-detail-div" style="width: 100%;">
                     <div class="card-body">
                         <b>Shipment Date: </b>{{details.event.shipment_date}}
                     </div>
@@ -30,6 +26,9 @@
                     </div>
                     <div class="card-body">
                         <b>Quantity: </b>{{details.quantity}}
+                    </div>
+                    <div class="card-body">
+                        <b>Quantity Left: </b>{{products_obj.quantity_left}}
                     </div>
                 </div>
             </div>
