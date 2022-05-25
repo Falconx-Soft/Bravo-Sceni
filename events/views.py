@@ -5,6 +5,10 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+
+def calendar(request):
+    return render(request,'events/calendar.html')
+
 @login_required(login_url='login')
 def get_events(request):
     events_obj = events.objects.filter(status="confirmed")

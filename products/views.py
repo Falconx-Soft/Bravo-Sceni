@@ -1,5 +1,7 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect
 from .models import*
+from events.models import*
 from django.contrib.auth.decorators import login_required
 
 
@@ -51,3 +53,12 @@ def edit_products(request,id):
 		return render(request,'products/edit_products.html',context)
 	else:
 		return redirect('products')
+
+@login_required(login_url='login')
+def view_product(request,id):
+	products_obj = products.objects.get(id=id)
+	event_products_obj = event_products.objects.filter(event_products=products_obj)
+	context = {
+		'product_details':event_products_obj
+	}
+	return render(request,'products/view_product.html',context)

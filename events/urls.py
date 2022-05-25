@@ -9,4 +9,6 @@ urlpatterns = [
     path('edit_events/<int:id>', views.edit_events, name="edit_events"),
 
     path('search/', views.search, name="search"),
+
+    path('calendar/', views.calendar, name="calendar"),
 ]

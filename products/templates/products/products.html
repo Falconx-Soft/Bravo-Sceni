@@ -37,6 +37,7 @@
                         </div>
                     </div>
                     <div class="product-btn-div">
+                            <a class="btn  btn-success" href="{% url 'view_product' p.id %}">Details</a>
                         {% if request.user.is_superuser %}
                             <a class="btn  btn-primary" href="{% url 'edit_products' p.id %}">Edit</a>
                             <a class="btn  btn-danger" href="{% url 'delete_products' p.id %}">Delete</a>
