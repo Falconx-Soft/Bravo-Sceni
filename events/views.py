@@ -11,13 +11,20 @@ import pathlib
 
 print(pathlib.Path().resolve(),"***************")
 
+CLIENT_SECRET_FILE =str(pathlib.Path().resolve())+'\events\credentials.json'
+API_NAME = 'Calendar'
+API_VERSION = 'v3'
+SCOPES = ['https://www.googleapis.com/auth/calendar']
+
+service = create_service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+calander_id_chicago = 'ibrahim.murad009@gmail.com'
+
 
 def calendar(request):
     return render(request,'events/calendar.html')
 
 @login_required(login_url='login')
 def get_events(request):
-
     events_obj = events.objects.filter(status="confirmed")
     events_obj_tentative = events.objects.filter(status="tentative")
     events_obj_late = events.objects.filter(status="late")
@@ -40,13 +47,6 @@ def view_event(request,id):
 
 @login_required(login_url='login')
 def add_events(request):
-    CLIENT_SECRET_FILE =str(pathlib.Path().resolve())+'/events/credentials.json'
-    API_NAME = 'Calendar'
-    API_VERSION = 'v3'
-    SCOPES = ['https://www.googleapis.com/auth/calendar']
-
-    service = create_service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
-    calander_id_chicago = 'ibrahim.murad009@gmail.com'
     if request.user.is_superuser:
         products_obj = products.objects.all()
         if request.method == 'POST':
@@ -125,13 +125,6 @@ def add_events(request):
 
 @login_required(login_url='login')
 def edit_events(request,id):
-    CLIENT_SECRET_FILE =str(pathlib.Path().resolve())+'/events/credentials.json'
-    API_NAME = 'Calendar'
-    API_VERSION = 'v3'
-    SCOPES = ['https://www.googleapis.com/auth/calendar']
-
-    service = create_service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
-    calander_id_chicago = 'ibrahim.murad009@gmail.com'
     if request.user.is_superuser:
         events_obj = events.objects.get(id=id)
         event_products_obj = event_products.objects.filter(event=events_obj)
@@ -267,13 +260,6 @@ def edit_events(request,id):
 
 @login_required(login_url='login')
 def delete_events(request,id):
-    CLIENT_SECRET_FILE =str(pathlib.Path().resolve())+'/events/credentials.json'
-    API_NAME = 'Calendar'
-    API_VERSION = 'v3'
-    SCOPES = ['https://www.googleapis.com/auth/calendar']
-
-    service = create_service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
-    calander_id_chicago = 'ibrahim.murad009@gmail.com'
     if request.user.is_superuser:
         events_obj = events.objects.get(id=id)
         #Delete Event
