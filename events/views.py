@@ -11,7 +11,7 @@ import pathlib
 
 print(pathlib.Path().resolve(),"***************")
 
-CLIENT_SECRET_FILE =str(pathlib.Path().resolve())+'/events/credentials.json'
+CLIENT_SECRET_FILE =str(pathlib.Path().resolve())+'\events\credentials.json'
 API_NAME = 'Calendar'
 API_VERSION = 'v3'
 SCOPES = ['https://www.googleapis.com/auth/calendar']
