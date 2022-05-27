@@ -6,8 +6,17 @@ from django.contrib.auth.decorators import login_required
 # Google Calendar
 
 from pprint import pprint
-from .google import create_service, convert_to_RFC_datetime
+from .google import convert_to_RFC_datetime
 import pathlib
+
+from decouple import config
+from google.oauth2 import service_account
+import googleapiclient.discovery
+import datetime
+
+CAL_ID = config('CAL_ID')
+SCOPES = ['https://www.googleapis.com/auth/calendar']
+SERVICE_ACCOUNT_FILE = str(pathlib.Path().resolve())+'\events\credentials.json'
 
 print(pathlib.Path().resolve(),"***************")
 
@@ -18,6 +27,10 @@ SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 calander_id_chicago = 'ibrahim.murad009@gmail.com'
 
+credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+service = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
+
+#service = create_service(CLIENT_SECRET_FILE, API_NAME, API_VERSION)
 
 def calendar(request):
     return render(request,'events/calendar.html')
@@ -46,7 +59,6 @@ def view_event(request,id):
 
 @login_required(login_url='login')
 def add_events(request):
-    service = create_service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
     if request.user.is_superuser:
         products_obj = products.objects.all()
         if request.method == 'POST':
@@ -80,7 +92,8 @@ def add_events(request):
                 'description': 'Shipment Date:'+shipment_date+' Return Date:'+return_date+' Location:'+event_location+' Status:'+status,
             }
 
-            event = service.events().insert(calendarId=calander_id_chicago, body=event_request_body).execute()
+            event = service.events().insert(calendarId='ibrahim.murad009@gmail.com', body=event_request_body).execute()
+    
             print(event)
 
             eventID = event['id']
