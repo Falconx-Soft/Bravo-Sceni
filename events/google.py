@@ -19,7 +19,6 @@ def create_service(client_secret_file, api_name, api_version, *scopes, prefix=''
 	token_dir = 'token files'
 	pickle_file = f'token_{API_SERVICE_NAME}_{API_VERSION}{prefix}.pickle'
 
-	print(working_dir,token_dir,"*********FIle*******************")
 	### Check if token dir exists first, if not, create the folder
 	if not os.path.exists(os.path.join(working_dir, token_dir)):
 		os.mkdir(os.path.join(working_dir, token_dir))
@@ -33,12 +32,7 @@ def create_service(client_secret_file, api_name, api_version, *scopes, prefix=''
 			cred.refresh(Request())
 		else:
 			flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET_FILE, SCOPES)
-			cred = flow.run_local_server(
-					host='lifeeline.com',
-					port=8002,
-					authorization_prompt_message='Please visit this URL: {url}',
-					success_message='The auth flow is complete; you may close this window.',
-					open_browser=True)
+			cred = flow.run_local_server()
 
 		with open(os.path.join(working_dir, token_dir, pickle_file), 'wb') as token:
 			pickle.dump(cred, token)

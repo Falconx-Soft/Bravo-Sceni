@@ -16,7 +16,6 @@ API_NAME = 'Calendar'
 API_VERSION = 'v3'
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
-service = create_service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 calander_id_chicago = 'ibrahim.murad009@gmail.com'
 
 
@@ -47,6 +46,7 @@ def view_event(request,id):
 
 @login_required(login_url='login')
 def add_events(request):
+    service = create_service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
     if request.user.is_superuser:
         products_obj = products.objects.all()
         if request.method == 'POST':
