@@ -9,7 +9,6 @@ class events(models.Model):
     shipment_date = models.DateField()
     return_date = models.DateField()
     status = models.CharField(max_length=500)
-    google_event_id = models.CharField(max_length=500, null=True)
 
     def __str__(self):
         return self.client_name
