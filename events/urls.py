@@ -10,5 +10,5 @@ urlpatterns = [
 
     path('search/', views.search, name="search"),
 
-    path('calendar/', views.calendar, name="calendar"),
+    path('calendar/', views.CalendarView.as_view(), name="calendar"),
 ]
