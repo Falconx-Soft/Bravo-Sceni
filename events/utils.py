@@ -24,7 +24,19 @@ class Calendar(HTMLCalendar):
 			d += "</div><div class='modal-footer'><button type='button' class='btn  btn-secondary' data-dismiss='modal'>Close</button></div></div></div></div>"
 
 		if day != 0:
-			return f"<td><span class='date'>{day}</span><ul>{d}</ul></td>"
+
+			date_model = f"<td><span class='date' style='cursor:pointer;' data-toggle='modal' data-target='#exampleModalLive{day}-day'>{day}</span><ul>{d}</ul></td><div id='exampleModalLive{day}-day' class='modal fade' tabindex='-1' role='dialog' aria-labelledby='exampleModalLive Label' aria-hidden='true'><div class='modal-dialog' role='document'><div class='modal-content'><div class='modal-header'><h5 style='margin: 0px; line-height: 1.5; font-size: 18px;' id='exampleModalLive Label'>Events</h5></div><div class='modal-body'>"
+
+			for event in events_per_day:
+				date_model += f"<p><b>Client:</b> {event.client_name}</p><p><b>Status:</b> {event.status}</p>"
+				products = event_products.objects.filter(event=event)
+				for p in products:
+					date_model += f"<p><b>{p.event_products.name}:</b> {p.quantity}</p>"
+				date_model += "<hr>"
+
+			date_model += "</div><div class='modal-footer'><button type='button' class='btn  btn-secondary' data-dismiss='modal'>Close</button></div></div></div></div>"
+
+			return date_model
 		return '<td></td>'
 
 	# formats a week as a tr 

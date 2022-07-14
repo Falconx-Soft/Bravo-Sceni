@@ -167,8 +167,6 @@ def edit_events(request,id):
                 try:
                     temp_events = event_products.objects.get(id=temp_event_ids[x])
                     if temp_events.quantity != int(temp_quantities[x]):
-                        print(temp_events.event_products.quantity_left,"left one**********")
-                        print(temp_events.quantity,"add more")
                         temp_events.event_products.quantity_left += int(temp_events.quantity)
                         temp_events.event_products.save()
                         temp_events.delete()
@@ -248,8 +246,6 @@ def search(request):
     if request.method == 'POST' and request.POST.get('search_date_low_range') and request.POST.get('search_date_heigh_range'):
         search_date_low_range = request.POST.get('search_date_low_range')
         search_date_heigh_range = request.POST.get('search_date_heigh_range')
-
-        print(search_date_low_range,search_date_heigh_range,"*************")
 
         events_obj = events.objects.distinct().filter(
             Q(shipment_date__lte = search_date_low_range) &
