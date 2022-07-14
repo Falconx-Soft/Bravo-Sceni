@@ -42,6 +42,7 @@ def edit_products(request,id):
 			name = request.POST.get('name')
 			quantity = request.POST.get('quantity')
 			products_obj.name = name
+			products_obj.quantity_left += abs(int(quantity) - int(products_obj.quantity))
 			products_obj.quantity = quantity
 			if request.FILES.get('image'):
 				products_obj.image = request.FILES['image']
