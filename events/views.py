@@ -7,7 +7,9 @@ from datetime import datetime, timedelta, date
 from .utils import Calendar
 from django.utils.safestring import mark_safe
 from django.views import generic
+from django.utils.decorators import method_decorator
 
+@method_decorator(login_required, name='dispatch')
 class CalendarView(generic.ListView):
     model = events
     template_name = 'events/calendar.html'
