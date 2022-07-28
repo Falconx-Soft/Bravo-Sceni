@@ -8,7 +8,6 @@ from .utils import Calendar
 from django.utils.safestring import mark_safe
 from django.views import generic
 
-@login_required(login_url='login')
 class CalendarView(generic.ListView):
     model = events
     template_name = 'events/calendar.html'
