@@ -8,6 +8,7 @@ from .utils import Calendar
 from django.utils.safestring import mark_safe
 from django.views import generic
 
+@login_required(login_url='login')
 class CalendarView(generic.ListView):
     model = events
     template_name = 'events/calendar.html'
@@ -248,13 +249,13 @@ def search(request):
         search_date_heigh_range = request.POST.get('search_date_heigh_range')
 
         events_obj = events.objects.distinct().filter(
-            Q(shipment_date__lte = search_date_low_range) &
-            Q(return_date__lte=search_date_heigh_range) |
             Q(shipment_date__gte = search_date_low_range) &
-            Q(return_date__gte=search_date_heigh_range) |
-            Q(shipment_date__lte = search_date_low_range) &
-            Q(return_date__gte=search_date_heigh_range)
+            Q(shipment_date__lte=search_date_heigh_range) |
+            Q(return_date__gte = search_date_low_range) &
+            Q(return_date__lte=search_date_heigh_range)
+
         )
+
         context={
             'search_date_low_range':search_date_low_range,
             'search_date_heigh_range':search_date_heigh_range,
