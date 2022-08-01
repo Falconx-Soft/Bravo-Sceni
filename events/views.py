@@ -89,9 +89,10 @@ def add_events(request):
                             event_products=product_obj,
                             event=event_obj
                         )
-                        product_obj.quantity_left -= int(temp_quantities[x])
+                        if event_obj.status == "confirmed":
+                            product_obj.quantity_left -= int(temp_quantities[x])
 
-                        product_obj.save()
+                            product_obj.save()
                         event_products_obj.save()
                     else:
                         event_obj.delete()
@@ -149,6 +150,8 @@ def edit_events(request,id):
             return_date = request.POST.get('return_date')
             status = request.POST.get('status')
 
+            old_status = events_obj.status
+
             events_obj.client_name = client_name
             events_obj.event_location = event_location
             events_obj.shipment_date = shipment_date
@@ -169,8 +172,9 @@ def edit_events(request,id):
                 try:
                     temp_events = event_products.objects.get(id=temp_event_ids[x])
                     if temp_events.quantity != int(temp_quantities[x]):
-                        temp_events.event_products.quantity_left += int(temp_events.quantity)
-                        temp_events.event_products.save()
+                        if old_status.lower() == 'confirmed':
+                            temp_events.event_products.quantity_left += int(temp_events.quantity)
+                            temp_events.event_products.save()
                         temp_events.delete()
 
                         if temp_quantities[x] != "" and int(temp_quantities[x]) > 0:
@@ -181,8 +185,9 @@ def edit_events(request,id):
                                     event_products=product_obj,
                                     event=events_obj
                                 )
-                                product_obj.quantity_left -= int(temp_quantities[x])
-                                product_obj.save()
+                                if events_obj.status.lower() == 'confirmed':
+                                    product_obj.quantity_left -= int(temp_quantities[x])
+                                    product_obj.save()
                                 create_event_products_obj.save()
                             else:
                                 msg = True
@@ -194,9 +199,9 @@ def edit_events(request,id):
                             event_products=product_obj,
                             event=events_obj
                         )
-                        product_obj.quantity_left -= int(temp_quantities[x])
-
-                        product_obj.save()
+                        if events_obj.status.lower() == 'confirmed':
+                            product_obj.quantity_left -= int(temp_quantities[x])
+                            product_obj.save()
                         create_event_products_obj.save()
                     else:
                         msg = True
@@ -226,9 +231,10 @@ def delete_events(request,id):
     if request.user.is_superuser:
         events_obj = events.objects.get(id=id)
         event_products_obj = event_products.objects.filter(event=events_obj)
-        for e in event_products_obj:
-            e.event_products.quantity_left = int(e.quantity) + e.event_products.quantity_left
-            e.event_products.save()
+        if events_obj.status == "confirmed":
+            for e in event_products_obj:
+                e.event_products.quantity_left = int(e.quantity) + e.event_products.quantity_left
+                e.event_products.save()
         events_obj.delete()
     return redirect('events')
 
